@@ -1,0 +1,120 @@
+<html>
+<head>
+    <title> Calgary Building Permits </title>
+
+    <!--  bootstrap
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    -->
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="styles.css">
+
+    <!--  jQuery -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+  <!-- Including Link from Leaflet Website-->
+     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+     integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+     crossorigin=""/>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css"/>
+
+
+     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+     integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+     crossorigin=""></script>
+
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+</head>
+
+
+
+<body>
+
+  <body style="background-color:#e8d5c4;">
+    <h2> Building Permits in The City of Calgary</h2>
+
+
+
+  <div class="DateSelector">
+    <form onsubmit="Dates(); return false;">
+      <label> Starting From:  </label>
+      <input type="date" id="from">
+      <br>
+      <br>
+      <label> To:  </label>
+      <input type="date" id="to">
+      <br>
+      <br>
+
+      <input class="btn btn-primary" type="submit" value="Submit">
+  </form>
+
+
+  </div>
+  <br>
+  <br>
+  <div id="mapStyle"></div>
+  <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+  <script>
+
+
+    //obtained from City of Calgary
+    let api='https://data.calgary.ca/resource/c2es-76ed.geojson?';
+
+
+
+    async function Dates(){
+
+      let dateFrom=document.querySelector('#from').value;
+      let dateTo=document.querySelector('#to').value;
+
+
+      if(dateFrom!=dateTo){
+        let url=api+'$where=issueddate > '+ '\'' + dateFrom +'\''+' and issueddate < '+'\''+dateTo+'\'';
+        const response = await fetch(url);
+        let data = await response.json();
+        console.log(url);
+
+       <!-- obtained from: https://github.com/Leaflet/Leaflet.markercluster -->
+
+        var markers = L.markerClusterGroup();
+        const Geomark= L.geoJSON(data, {
+            onEachFeature : function(feature, layer){
+                var popupContent =  'Date Issued: '+feature.properties.issueddate+'<br></br>'
+                                    +'Work Class Group: '+feature.properties.workclassgroup+'<br></br>'
+                                    +'Contractor Name: ' +feature.properties.contractorname+'<br></br>'
+                                    +'Community Name: '+feature.properties.communityname+'<br></br>'
+                                    +'Original Address: '+feature.properties.originaladdress;
+                layer.bindPopup(popupContent)
+            },
+        });
+        markers.addLayer(Geomark);
+        map.addLayer(markers);
+    }
+  }
+
+
+
+    //setting Map to show Calgary Initially, Lat and Long
+    var map = L.map('mapStyle').setView([51.0447, -114.0719], 10.5);
+
+    const attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+    const tileUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    const tiles=L.tileLayer(tileUrl,{attribution});
+
+    tiles.addTo(map);
+    var popup=L.popup();
+    var popup = new L.Popup();
+    var markers = L.markerClusterGroup();
+
+
+  </script>
+</div>
+
+</body>
+</html>
