@@ -1,16 +1,13 @@
 <html>
 <head>
     <title> Calgary Building Permits </title>
+<br>
 
-    <!--  bootstrap
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    -->
 
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="theme.css">
 
     <!--  jQuery -->
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
@@ -37,16 +34,17 @@
 
   <body style="background-color:#e8d5c4;">
     <h2> Building Permits in The City of Calgary</h2>
-
+<hr>
+    <hr>
+<br>
 
 
   <div class="DateSelector">
     <form onsubmit="Dates(); return false;">
       <label> Starting From:  </label>
       <input type="date" id="from">
-      <br>
-      <br>
-      <label> To:  </label>
+
+      <label>          To:  </label>
       <input type="date" id="to">
       <br>
       <br>
@@ -64,18 +62,20 @@
 
 
     //obtained from City of Calgary
-    let api='https://data.calgary.ca/resource/c2es-76ed.geojson?';
+    let API='https://data.calgary.ca/resource/c2es-76ed.geojson?';
 
 
 
     async function Dates(){
+
+<!-- Gets dates from the input calendar values to search thru the City of Calgary database/API -->
 
       let dateFrom=document.querySelector('#from').value;
       let dateTo=document.querySelector('#to').value;
 
 
       if(dateFrom!=dateTo){
-        let url=api+'$where=issueddate > '+ '\'' + dateFrom +'\''+' and issueddate < '+'\''+dateTo+'\'';
+        let url=API+'$where=issueddate > '+ '\'' + dateFrom +'\''+' and issueddate < '+'\''+dateTo+'\'';
         const response = await fetch(url);
         let data = await response.json();
         console.log(url);
@@ -86,9 +86,9 @@
         const Geomark= L.geoJSON(data, {
             onEachFeature : function(feature, layer){
                 var popupContent =  'Date Issued: '+feature.properties.issueddate+'<br></br>'
+                                    +'Community Name: '+feature.properties.communityname+'<br></br>'
                                     +'Work Class Group: '+feature.properties.workclassgroup+'<br></br>'
                                     +'Contractor Name: ' +feature.properties.contractorname+'<br></br>'
-                                    +'Community Name: '+feature.properties.communityname+'<br></br>'
                                     +'Original Address: '+feature.properties.originaladdress;
                 layer.bindPopup(popupContent)
             },
