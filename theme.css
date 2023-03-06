@@ -1,6 +1,4 @@
-h1{
-    text-align: center;
-}
+
 
 
 h2
@@ -14,7 +12,8 @@ h2
 }
 
 
-#mapStyle {
+#mapStyle
+{
 
     height: 90%;
     margin: auto;
@@ -23,18 +22,15 @@ h2
     padding: 10px;
   }
 
-  .calendar{
-    text-align: center;
-  }
 
 
   .btn-primary
   {
-    color: blue;
+      color: blue;
       border: 3px solid black;
-  padding: 10px 30px;
-  font-size: 16px;
-    position: relative;
-    cursor: pointer;
+      padding: 10px 30px;
+      font-size: 16px;
+      position: relative;
+      cursor: pointer;
   }
 
