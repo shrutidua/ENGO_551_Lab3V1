@@ -26,6 +26,12 @@
      crossorigin=""></script>
 
     <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+<script src='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.js'></script>
+<link href='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.css' rel='stylesheet' />
+
+
 </head>
 
 
@@ -97,15 +103,28 @@
         map.addLayer(markers);
     }
   }
+<!-- ENGO 551 LAB 4 Starts Here-->
 
+   L.mapbox.accessToken = 'pk.eyJ1Ijoic2hydXRpZHVhIiwiYSI6ImNsZjZmb241MzBjaG0zcHFtdmhveWZwNmEifQ.FPgZ4tsoKsyW-g1SJQ7RpA'
 
+   var map = L.map('mapStyle').setView([51.0447, -114.0719], 10.5);
 
-    //setting Map to show Calgary Initially, Lat and Long
-    var map = L.map('mapStyle').setView([51.0447, -114.0719], 10.5);
+  var trafficIncidents = L.mapbox.styleLayer('mapbox://styles/shrutidua/clf6fuy7g000q01ospdy7rxkz').addTo(map);
 
-    const attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
-    const tileUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-    const tiles=L.tileLayer(tileUrl,{attribution});
+ var regular = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    tileSize: 512,
+    zoomOffset: -1,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  });
+
+ var baseMaps={
+
+      "Traffic Accidents in 2017":trafficIncidents,
+      "Normal Map": regular,
+    };
+
+  L.control.layers(baseMaps).addTo(map);
+
 
     tiles.addTo(map);
     var popup=L.popup();
