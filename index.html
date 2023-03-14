@@ -27,6 +27,8 @@
 
     <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
 
+    <!---------------------------- NEW ADDITION FOR LAB 4 -------------------------------------------------------->
+
 <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 <script src='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.js'></script>
 <link href='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.css' rel='stylesheet' />
@@ -117,13 +119,13 @@
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   });
 
- var baseMaps={
+ var toggleMap={
 
-      "Traffic Accidents in 2017":trafficIncidents,
+      "Traffic Incidents in 2017":trafficIncidents,
       "Normal Map": regular,
     };
 
-  L.control.layers(baseMaps).addTo(map);
+  L.control.layers(toggleMap).addTo(map);
 
 
     tiles.addTo(map);
